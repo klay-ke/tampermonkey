@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hymnal.net
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @author       Klay Ke
 // @match        https://www.hymnal.net/*/hymn/h/*
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
@@ -13,7 +13,7 @@
 
     let num = location.href.substring(location.href.lastIndexOf("/")+1);
     $("body").append("<div id='hymn_number' style='position: fixed; left:0px; top:0px; z-index: 999; text-align: center;'><p style='padding: 10px; cursor: move; z-index: 9999; margin:0; font-size: 25px; background-color: #2196F3; color: #fff;'>Hymn #"+num+"</p></div>");
-
+    $("[data-type='chorus']").removeClass('hidden');
 
     dragElement(document.getElementById("hymn_number"));
 
