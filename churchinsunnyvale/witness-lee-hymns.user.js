@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         witness-lee-hymns
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @author       Klay Ke
 // @match        http://www.witness-lee-hymns.org/hymns/*.html
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
@@ -14,7 +14,22 @@
     let num = $("h1").text();
     $("h1").remove();
     $("body").append("<div id='hymn_number' style='position: fixed; left:0px; top:0px; z-index: 999; text-align: center;'><p style='padding: 10px; cursor: move; z-index: 9999; margin:0; font-size: 25px; background-color: #2196F3; color: #fff;'>"+num+"</p></div>");
-
+    let line = $( "i:contains(Chorus)").parent().parent().parent();
+    let table = line.parents('table:eq(0)');
+    if (line.length != 0) {
+        let chorus = "";
+        while(line.text().trim() && line.text()[1] != '2') {
+            chorus += "<tr>" + line.html() + "</tr>";
+            line = line.next();
+        }
+        while(line.text().trim()) {
+            let nextLine = line.next();
+            if (!nextLine.text().trim() || nextLine.text()[1] >= '0' && nextLine.text()[1] <= '9') {
+                line.after(chorus);
+            }
+            line = nextLine;
+        }
+    }
 
     dragElement(document.getElementById("hymn_number"));
 
